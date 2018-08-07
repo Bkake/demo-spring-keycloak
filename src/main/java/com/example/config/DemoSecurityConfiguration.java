@@ -1,5 +1,7 @@
 package com.example.config;
 
+import org.keycloak.adapters.KeycloakConfigResolver;
+import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
@@ -42,6 +44,16 @@ public class DemoSecurityConfiguration {
             // simple mappeur d'autorité pour éviter ROLE_
             keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
             auth.authenticationProvider(keycloakAuthenticationProvider);
+        }
+
+        /**
+         * Définition du resolver Spring Boot
+         * Nécéssaire pour gérer les configurations de démarrage de spring boot
+         * @return
+         */
+        @Bean
+        public KeycloakConfigResolver KeycloakConfigResolver() {
+            return new KeycloakSpringBootConfigResolver();
         }
     }
 }
