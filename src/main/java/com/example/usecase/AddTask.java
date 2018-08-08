@@ -1,5 +1,6 @@
 package com.example.usecase;
 
+import com.example.annotation.IsAdmin;
 import com.example.model.Task;
 import com.example.repository.TaskRepository;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -14,7 +15,6 @@ import java.util.Optional;
 
 @Component
 @Value.Enclosing
-@Secured("ROLE_ADMIN")
 public class AddTask {
     private TaskRepository repository;
 
@@ -23,6 +23,7 @@ public class AddTask {
         this.repository = repository;
     }
 
+    @IsAdmin
     public Response run(Request request) {
         if (Objects.isNull(request)) {
             return  ImmutableAddTask.Response.of(Status.REQUEST_ERROR);

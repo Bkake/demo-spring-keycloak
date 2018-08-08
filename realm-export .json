@@ -1,6 +1,6 @@
 {
-  "id": "ineat-realm",
-  "realm": "ineat-realm",
+  "id": "demo-realm",
+  "realm": "demo-realm",
   "notBefore": 0,
   "revokeRefreshToken": false,
   "refreshTokenMaxReuse": 0,
@@ -42,7 +42,7 @@
         "description": "${role_uma_authorization}",
         "composite": false,
         "clientRole": false,
-        "containerId": "ineat-realm"
+        "containerId": "demo-realm"
       },
       {
         "id": "de1d28e3-ae64-4807-935d-6291b71534e2",
@@ -50,21 +50,21 @@
         "description": "${role_offline-access}",
         "composite": false,
         "clientRole": false,
-        "containerId": "ineat-realm"
+        "containerId": "demo-realm"
       },
       {
         "id": "666527d2-9b76-480e-bfc9-436f31d602e5",
         "name": "USER",
         "composite": false,
         "clientRole": false,
-        "containerId": "ineat-realm"
+        "containerId": "demo-realm"
       },
       {
         "id": "1d937ade-b92c-4922-bbf3-c071bbbb2d3c",
         "name": "ADMIN",
         "composite": false,
         "clientRole": false,
-        "containerId": "ineat-realm"
+        "containerId": "demo-realm"
       }
     ],
     "client": {
@@ -262,7 +262,7 @@
         }
       ],
       "security-admin-console": [],
-      "ineat-api": [],
+      "demo-api": [],
       "admin-cli": [],
       "broker": [
         {
@@ -274,7 +274,7 @@
           "containerId": "86d24202-d47c-4dd5-8b91-c307c3b59d73"
         }
       ],
-      "ineat-web": [],
+      "demo-web": [],
       "account": [
         {
           "id": "83712a96-7e6c-4408-9cd2-2a0b685636a3",
@@ -341,7 +341,7 @@
       "id": "9503cc88-359e-408e-b580-582ece7b57c4",
       "clientId": "account",
       "name": "${client_account}",
-      "baseUrl": "/auth/realms/ineat-realm/account",
+      "baseUrl": "/auth/realms/demo-realm/account",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
@@ -351,7 +351,7 @@
         "manage-account"
       ],
       "redirectUris": [
-        "/auth/realms/ineat-realm/account/*"
+        "/auth/realms/demo-realm/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -383,13 +383,13 @@
       "id": "9311cab4-d28e-4c55-ace3-c15cd1e2da76",
       "clientId": "security-admin-console",
       "name": "${client_security-admin-console}",
-      "baseUrl": "/auth/admin/ineat-realm/console/index.html",
+      "baseUrl": "/auth/admin/demo-realm/console/index.html",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "/auth/admin/ineat-realm/console/*"
+        "/auth/admin/demo-realm/console/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -506,7 +506,7 @@
     },
     {
       "id": "96984369-7ddc-435c-bf93-b7dd9feb77c4",
-      "clientId": "ineat-web",
+      "clientId": "demo-web",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
@@ -598,7 +598,7 @@
     },
     {
       "id": "901c3f91-b17e-4da0-bbc8-6e12409d156e",
-      "clientId": "ineat-api",
+      "clientId": "demo-api",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",

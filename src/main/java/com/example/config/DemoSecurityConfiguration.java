@@ -56,7 +56,7 @@ public class DemoSecurityConfiguration {
                     .and()
                     .authorizeRequests()
                     .antMatchers(HttpMethod.OPTIONS).permitAll()
-                    .antMatchers("/logout", "/", "/unsecured").permitAll()
+                    .antMatchers("/logout", "/", "/unsecured", "/task/test-secured-usecase").permitAll()
                     .antMatchers("/user").hasRole("USER")
                     .antMatchers("/admin").hasRole("ADMIN");
         }
