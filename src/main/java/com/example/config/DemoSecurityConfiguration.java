@@ -14,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
@@ -26,6 +27,41 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class DemoSecurityConfiguration {
+
+    /**
+     * See https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-custom-dsls
+     * <ul><li>Manage paths securisation here !You must use this configuration in tests to validate routes securisation</li>
+     * <li>Use with   .and().apply(new CommonVitodocSecuritAdapter()) on http dsl</li>
+     * </ul>
+     */
+    public static class CommonSpringKeyCloakConfigurationAdapter extends
+            AbstractHttpConfigurer<CommonSpringKeyCloakConfigurationAdapter, HttpSecurity> {
+
+        @Override
+        public void init(HttpSecurity http) throws Exception {
+            // toute méthode qui ajoute un autre configuration
+            // doit être fait dans la méthode init
+            http
+                    // désactiver csrf à cause du mode API
+                    .csrf().disable()
+
+                    // configuration de la chaine de sécurité de sesssion
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+                    .and()
+                    // getstion de la sécurité des routes
+                    .authorizeRequests().antMatchers(HttpMethod.OPTIONS).permitAll()
+                    .and()
+                    .authorizeRequests()
+                    .antMatchers(HttpMethod.OPTIONS).permitAll()
+                    .antMatchers("/logout", "/", "/unsecured").permitAll()
+                    .antMatchers("/user").hasRole("USER")
+                    .antMatchers("/admin").hasRole("ADMIN")
+                    .anyRequest().denyAll();
+        }
+
+    }
 
     @Configuration
     @EnableWebSecurity
@@ -78,13 +114,9 @@ public class DemoSecurityConfiguration {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                    // désactiver csrf à cause du mode API
-                    .csrf().disable()
-
                     // configuration de la chaine de sécurité pour qu’elle utilise notre politique de sesssion, déclarée précedemment
                     .sessionManagement()
                         .sessionAuthenticationStrategy(sessionAuthenticationStrategy())
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                     // utilisation des filtres de sécurités fournit par Keycloak (qui permettent de valider les tokens à chaque appel, etc)
                     .and()
@@ -103,15 +135,9 @@ public class DemoSecurityConfiguration {
                                 response.setStatus(HttpServletResponse.SC_OK)
                         )
 
-                    // gestion la sécurisation des routes
-                    .and()
-                         //permet aux frameworks (Angular, React ..) de récupérer les informations  d’un endpoint.
-                        .authorizeRequests().antMatchers(HttpMethod.OPTIONS).permitAll()
-
-                        .antMatchers("/logout", "/", "/unsecured").permitAll()
-                        .antMatchers("/user").hasRole("USER")
-                        .antMatchers("/admin").hasRole("ADMIN")
-                        .anyRequest().denyAll();
+                    // utilisation de la configuration communes
+                    // definie plus haut
+                    .and().apply(new CommonSpringKeyCloakConfigurationAdapter());
         }
     }
 }
