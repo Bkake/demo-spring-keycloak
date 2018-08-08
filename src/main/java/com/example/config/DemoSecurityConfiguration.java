@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -57,14 +58,17 @@ public class DemoSecurityConfiguration {
                     .antMatchers(HttpMethod.OPTIONS).permitAll()
                     .antMatchers("/logout", "/", "/unsecured").permitAll()
                     .antMatchers("/user").hasRole("USER")
-                    .antMatchers("/admin").hasRole("ADMIN")
-                    .anyRequest().denyAll();
+                    .antMatchers("/admin").hasRole("ADMIN");
         }
 
     }
 
     @Configuration
     @EnableWebSecurity
+    @EnableGlobalMethodSecurity(
+            prePostEnabled = true,
+            securedEnabled = true,
+            jsr250Enabled = true)
     @ConditionalOnProperty(name = "keycloak.enabled", havingValue = "true", matchIfMissing = true)
     @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
     public static class KeycloakConfigurationAdapter extends KeycloakWebSecurityConfigurerAdapter {
